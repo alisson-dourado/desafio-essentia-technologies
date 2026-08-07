@@ -8,6 +8,10 @@
     (taskUpdated)="updateTask($event)"
   />
 
+  @if (actionError()) {
+    <p>{{ actionError() }}</p>
+  }
+
   @if (loading()) {
     <p>Carregando tarefas...</p>
   } @else if (errorMessage()) {

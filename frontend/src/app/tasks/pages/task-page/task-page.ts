@@ -23,6 +23,7 @@ export class TaskPage implements OnInit {
   readonly errorMessage = signal<string | null>(null);
   readonly saving = signal(false);
   readonly processingTaskId = signal<number | null>(null);
+  readonly actionError = signal<string | null>(null);
 
   ngOnInit(): void {
     this.loading.set(true);
@@ -43,6 +44,7 @@ export class TaskPage implements OnInit {
   }
 
   createTask(createTask: CreateTask): void {
+    this.actionError.set(null);
     this.saving.set(true);
 
     this.tasksService
@@ -58,11 +60,13 @@ export class TaskPage implements OnInit {
         },
         error: (error) => {
           console.error('Error creating task', error);
+          this.actionError.set('Não foi possível criar a tarefa.');
         },
       });
   }
 
   updateCompletion(id: number, completed: boolean): void {
+    this.actionError.set(null);
     this.processingTaskId.set(id);
 
     this.tasksService
@@ -82,11 +86,13 @@ export class TaskPage implements OnInit {
         },
         error: (error) => {
           console.error('Error updating task completion', error);
+          this.actionError.set('Não foi possível alterar o status da tarefa.');
         },
       });
   }
 
   deleteTask(id: number): void {
+    this.actionError.set(null);
     this.processingTaskId.set(id);
 
     this.tasksService
@@ -104,6 +110,7 @@ export class TaskPage implements OnInit {
         },
         error: (error) => {
           console.error('Error deleting task', error);
+          this.actionError.set('Não foi possível excluir a tarefa.');
         },
       });
   }
@@ -113,6 +120,7 @@ export class TaskPage implements OnInit {
   }
 
   updateTask(event: { id: number; changes: UpdateTask }): void {
+    this.actionError.set(null);
     this.saving.set(true);
 
     this.tasksService
@@ -134,6 +142,7 @@ export class TaskPage implements OnInit {
         },
         error: (error) => {
           console.error('Error updating task', error);
+          this.actionError.set('Não foi possível atualizar a tarefa.');
         },
       });
   }
