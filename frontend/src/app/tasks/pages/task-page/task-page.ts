@@ -53,4 +53,17 @@ export class TaskPage implements OnInit {
       },
     });
   }
+
+  deleteTask(id: number): void {
+    this.tasksService.remove(id).subscribe({
+      next: () => {
+        this.tasks.update((tasks) =>
+          tasks.filter((task) => task.id !== id),
+        );
+      },
+      error: (error) => {
+        console.error('Error deleting task', error);
+      },
+    });
+  }
 }

@@ -8,5 +8,6 @@
   <app-task-list
     [tasks]="tasks()"
     (completionChanged)="updateCompletion($event.id, $event.completed)"
+    (taskDeleted)="deleteTask($event)"
   />
 </section>

@@ -15,11 +15,17 @@ export class TaskList {
     id: number;
     completed: boolean;
   }>();
+
+  readonly taskDeleted = output<number>();
   
   toggleCompleted(task: Task): void {
     this.completionChanged.emit({
       id: task.id,
       completed: !task.completed,
     });
+  }
+
+  deleteTask(id: number): void {
+    this.taskDeleted.emit(id);
   }
 }

@@ -27,4 +27,8 @@ export class TasksService {
       updateTask,
     );
   }
+
+  remove(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }
