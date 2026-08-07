@@ -5,6 +5,7 @@ import { TasksService } from '../../services/tasks.service';
 import { TaskForm } from '../../components/task-form/task-form';
 import { TaskList } from '../../components/task-list/task-list';
 import { CreateTask } from '../../models/create-task';
+import { UpdateTask } from '../../models/update-task';
 
 @Component({
   selector: 'app-task-page',
@@ -16,6 +17,7 @@ export class TaskPage implements OnInit {
   private readonly tasksService = inject(TasksService);
 
   readonly tasks = signal<Task[]>([]);
+  readonly editingTask = signal<Task | null>(null);
 
   ngOnInit(): void {
     this.tasksService.findAll().subscribe({
@@ -63,6 +65,27 @@ export class TaskPage implements OnInit {
       },
       error: (error) => {
         console.error('Error deleting task', error);
+      },
+    });
+  }
+
+  startEditing(task: Task): void {
+    this.editingTask.set(task);
+  }
+
+  updateTask(event: { id: number; changes: UpdateTask }): void {
+    this.tasksService.update(event.id, event.changes).subscribe({
+      next: (updatedTask) => {
+        this.tasks.update((tasks) =>
+          tasks.map((task) =>
+            task.id === updatedTask.id ? updatedTask : task,
+          ),
+        );
+  
+        this.editingTask.set(null);
+      },
+      error: (error) => {
+        console.error('Error updating task', error);
       },
     });
   }

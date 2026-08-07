@@ -17,6 +17,8 @@ export class TaskList {
   }>();
 
   readonly taskDeleted = output<number>();
+
+  readonly taskEditRequested = output<Task>();
   
   toggleCompleted(task: Task): void {
     this.completionChanged.emit({
@@ -27,5 +29,9 @@ export class TaskList {
 
   deleteTask(id: number): void {
     this.taskDeleted.emit(id);
+  }
+
+  editTask(task: Task): void {
+    this.taskEditRequested.emit(task);
   }
 }

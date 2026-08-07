@@ -1,10 +1,12 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, output, input, effect } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Task } from '../../models/task';
 import { CreateTask } from '../../models/create-task';
+import { UpdateTask } from '../../models/update-task';
 
 @Component({
   selector: 'app-task-form',
@@ -15,12 +17,34 @@ import { CreateTask } from '../../models/create-task';
 export class TaskForm {
   private readonly formBuilder = inject(FormBuilder);
   
+  readonly taskToEdit = input<Task | null>(null);
   readonly taskCreated = output<CreateTask>();
+  readonly taskUpdated = output<{
+    id: number;
+    changes: UpdateTask;
+  }>();
 
   readonly form = this.formBuilder.nonNullable.group({
     title: ['', [Validators.required, Validators.maxLength(255)]],
     description: [''],
   });
+
+  constructor() {
+    effect(() => {
+      const task = this.taskToEdit();
+  
+      if (task) {
+        this.form.setValue({
+          title: task.title,
+          description: task.description ?? '',
+        });
+
+        return;
+      }
+
+      this.form.reset();
+    });
+  }
 
   submit(): void {
     if (this.form.invalid) {
@@ -28,6 +52,19 @@ export class TaskForm {
     }
   
     const { title, description } = this.form.getRawValue();
+    const task = this.taskToEdit();
+
+    if (task) {
+      this.taskUpdated.emit({
+        id: task.id,
+        changes: {
+          title,
+          description,
+        },
+      });
+  
+      return;
+    }
   
     this.taskCreated.emit({
       title,

@@ -2,12 +2,15 @@
   <h1>Tarefas</h1>
 
   <app-task-form
+    [taskToEdit]="editingTask()"
     (taskCreated)="createTask($event)"
+    (taskUpdated)="updateTask($event)"
   />
 
   <app-task-list
     [tasks]="tasks()"
     (completionChanged)="updateCompletion($event.id, $event.completed)"
     (taskDeleted)="deleteTask($event)"
+    (taskEditRequested)="startEditing($event)"
   />
 </section>

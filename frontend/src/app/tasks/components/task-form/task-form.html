@@ -27,6 +27,6 @@
     </div>
   
     <button type="submit" [disabled]="form.invalid">
-      Criar tarefa
+      {{ taskToEdit() ? 'Salvar alterações' : 'Criar tarefa' }}
     </button>
   </form>
