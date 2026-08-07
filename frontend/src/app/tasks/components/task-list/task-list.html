@@ -4,6 +4,12 @@
     <ul>
         @for (task of tasks(); track task.id) {
             <li>
+                <input
+                    type="checkbox"
+                    [checked]="task.completed"
+                    (change)="toggleCompleted(task)"
+                />
+
                 <strong>{{ task.title }}</strong>
 
                 @if (task.description) {

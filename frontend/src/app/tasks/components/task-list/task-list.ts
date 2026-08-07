@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 import { Task } from '../../models/task';
 
@@ -9,5 +9,17 @@ import { Task } from '../../models/task';
   styleUrl: './task-list.scss',
 })
 export class TaskList {
-  readonly tasks = input.required<Task[]>();
+  readonly tasks = input.required<Task[]>();    
+
+  readonly completionChanged = output<{
+    id: number;
+    completed: boolean;
+  }>();
+  
+  toggleCompleted(task: Task): void {
+    this.completionChanged.emit({
+      id: task.id,
+      completed: !task.completed,
+    });
+  }
 }

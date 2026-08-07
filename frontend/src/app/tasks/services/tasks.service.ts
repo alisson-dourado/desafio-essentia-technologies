@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Task } from '../models/task';
 import { CreateTask } from '../models/create-task';
+import { UpdateTask } from '../models/update-task';
 
 @Injectable({
   providedIn: 'root',
@@ -18,5 +19,12 @@ export class TasksService {
 
   create(createTask: CreateTask): Observable<Task> {
     return this.http.post<Task>(this.apiUrl, createTask);
+  }
+
+  update(id: number, updateTask: UpdateTask): Observable<Task> {
+    return this.http.patch<Task>(
+      `${this.apiUrl}/${id}`,
+      updateTask,
+    );
   }
 }

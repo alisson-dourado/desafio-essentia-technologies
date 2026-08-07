@@ -38,4 +38,19 @@ export class TaskPage implements OnInit {
       },
     });
   }
+
+  updateCompletion(id: number, completed: boolean): void {
+    this.tasksService.update(id, { completed }).subscribe({
+      next: (updatedTask) => {
+        this.tasks.update((tasks) =>
+          tasks.map((task) =>
+            task.id === updatedTask.id ? updatedTask : task,
+          ),
+        );
+      },
+      error: (error) => {
+        console.error('Error updating task completion', error);
+      },
+    });
+  }
 }
