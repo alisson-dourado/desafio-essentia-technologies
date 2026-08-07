@@ -3,6 +3,7 @@
 
   <app-task-form
     [taskToEdit]="editingTask()"
+    [saving]="saving()"
     (taskCreated)="createTask($event)"
     (taskUpdated)="updateTask($event)"
   />
@@ -14,6 +15,7 @@
   } @else {
     <app-task-list
       [tasks]="tasks()"
+      [processingTaskId]="processingTaskId()"
       (completionChanged)="updateCompletion($event.id, $event.completed)"
       (taskDeleted)="deleteTask($event)"
       (taskEditRequested)="startEditing($event)"

@@ -19,6 +19,8 @@ export class TaskList {
   readonly taskDeleted = output<number>();
 
   readonly taskEditRequested = output<Task>();
+
+  readonly processingTaskId = input<number | null>(null);
   
   toggleCompleted(task: Task): void {
     this.completionChanged.emit({

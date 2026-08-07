@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { finalize } from 'rxjs';
 
 import { Task } from '../../models/task';
 import { TasksService } from '../../services/tasks.service';
@@ -20,6 +21,8 @@ export class TaskPage implements OnInit {
   readonly editingTask = signal<Task | null>(null);
   readonly loading = signal(false);
   readonly errorMessage = signal<string | null>(null);
+  readonly saving = signal(false);
+  readonly processingTaskId = signal<number | null>(null);
 
   ngOnInit(): void {
     this.loading.set(true);
@@ -40,42 +43,69 @@ export class TaskPage implements OnInit {
   }
 
   createTask(createTask: CreateTask): void {
-    this.tasksService.create(createTask).subscribe({
-      next: (task) => {
-        this.tasks.update((tasks) => [...tasks, task]);
-      },
-      error: (error) => {
-        console.error('Error creating task', error);
-      },
-    });
+    this.saving.set(true);
+
+    this.tasksService
+      .create(createTask)
+      .pipe(
+        finalize(() => {
+          this.saving.set(false);
+        }),
+      )
+      .subscribe({
+        next: (task) => {
+          this.tasks.update((tasks) => [...tasks, task]);
+        },
+        error: (error) => {
+          console.error('Error creating task', error);
+        },
+      });
   }
 
   updateCompletion(id: number, completed: boolean): void {
-    this.tasksService.update(id, { completed }).subscribe({
-      next: (updatedTask) => {
-        this.tasks.update((tasks) =>
-          tasks.map((task) =>
-            task.id === updatedTask.id ? updatedTask : task,
-          ),
-        );
-      },
-      error: (error) => {
-        console.error('Error updating task completion', error);
-      },
-    });
+    this.processingTaskId.set(id);
+
+    this.tasksService
+      .update(id, { completed })
+      .pipe(
+        finalize(() => {
+          this.processingTaskId.set(null);
+        }),
+      )
+      .subscribe({
+        next: (updatedTask) => {
+          this.tasks.update((tasks) =>
+            tasks.map((task) =>
+              task.id === updatedTask.id ? updatedTask : task,
+            ),
+          );
+        },
+        error: (error) => {
+          console.error('Error updating task completion', error);
+        },
+      });
   }
 
   deleteTask(id: number): void {
-    this.tasksService.remove(id).subscribe({
-      next: () => {
-        this.tasks.update((tasks) =>
-          tasks.filter((task) => task.id !== id),
-        );
-      },
-      error: (error) => {
-        console.error('Error deleting task', error);
-      },
-    });
+    this.processingTaskId.set(id);
+
+    this.tasksService
+      .remove(id)
+      .pipe(
+        finalize(() => {
+          this.processingTaskId.set(null);
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.tasks.update((tasks) =>
+            tasks.filter((task) => task.id !== id),
+          );
+        },
+        error: (error) => {
+          console.error('Error deleting task', error);
+        },
+      });
   }
 
   startEditing(task: Task): void {
@@ -83,19 +113,28 @@ export class TaskPage implements OnInit {
   }
 
   updateTask(event: { id: number; changes: UpdateTask }): void {
-    this.tasksService.update(event.id, event.changes).subscribe({
-      next: (updatedTask) => {
-        this.tasks.update((tasks) =>
-          tasks.map((task) =>
-            task.id === updatedTask.id ? updatedTask : task,
-          ),
-        );
-  
-        this.editingTask.set(null);
-      },
-      error: (error) => {
-        console.error('Error updating task', error);
-      },
-    });
+    this.saving.set(true);
+
+    this.tasksService
+      .update(event.id, event.changes)
+      .pipe(
+        finalize(() => {
+          this.saving.set(false);
+        }),
+      )
+      .subscribe({
+        next: (updatedTask) => {
+          this.tasks.update((tasks) =>
+            tasks.map((task) =>
+              task.id === updatedTask.id ? updatedTask : task,
+            ),
+          );
+    
+          this.editingTask.set(null);
+        },
+        error: (error) => {
+          console.error('Error updating task', error);
+        },
+      });
   }
 }

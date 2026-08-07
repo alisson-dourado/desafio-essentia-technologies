@@ -18,6 +18,7 @@ export class TaskForm {
   private readonly formBuilder = inject(FormBuilder);
   
   readonly taskToEdit = input<Task | null>(null);
+  readonly saving = input(false);
   readonly taskCreated = output<CreateTask>();
   readonly taskUpdated = output<{
     id: number;

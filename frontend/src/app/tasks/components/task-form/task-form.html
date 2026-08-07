@@ -26,7 +26,14 @@
       ></textarea>
     </div>
   
-    <button type="submit" [disabled]="form.invalid">
-      {{ taskToEdit() ? 'Salvar alterações' : 'Criar tarefa' }}
+    <button
+      type="submit"
+      [disabled]="form.invalid || saving()"
+    >
+      @if (saving()) {
+        Salvando...
+      } @else {
+        {{ taskToEdit() ? 'Salvar alterações' : 'Criar tarefa' }}
+      }
     </button>
   </form>

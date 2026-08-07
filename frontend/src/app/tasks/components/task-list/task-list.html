@@ -7,6 +7,7 @@
                 <input
                     type="checkbox"
                     [checked]="task.completed"
+                    [disabled]="processingTaskId() === task.id"
                     (change)="toggleCompleted(task)"
                 />
 
@@ -22,6 +23,7 @@
 
                 <button
                     type="button"
+                    [disabled]="processingTaskId() === task.id"
                     (click)="deleteTask(task.id)"
                 >
                     Excluir
@@ -29,6 +31,7 @@
 
                 <button
                     type="button"
+                    [disabled]="processingTaskId() === task.id"
                     (click)="editTask(task)"
                 >
                     Editar
