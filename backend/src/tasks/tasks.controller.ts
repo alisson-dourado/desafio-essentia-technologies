@@ -9,12 +9,15 @@ import {
   ParseIntPipe,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';
+import { AuthGuard } from '../auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
