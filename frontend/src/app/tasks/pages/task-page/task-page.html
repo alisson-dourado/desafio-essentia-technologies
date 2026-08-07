@@ -1,7 +1,15 @@
 <section class="tasks-page">
-  <h1>Tarefas</h1>
+  <div class="tasks-header">
+    <h1>Tarefas</h1>
 
-  <button (click)="logout()">Sair</button>
+    <button
+      type="button"
+      class="logout-button"
+      (click)="logout()"
+    >
+      Sair
+    </button>
+  </div>
 
   <app-task-form
     [taskToEdit]="editingTask()"

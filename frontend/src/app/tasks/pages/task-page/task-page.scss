@@ -4,10 +4,31 @@
   padding: 0 1rem 3rem;
 }
 
-.tasks-page h1 {
+.tasks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 1.5rem;
+}
+
+.tasks-page h1 {
+  margin: 0;
   font-size: 1.8rem;
   color: #333;
+}
+
+.logout-button {
+  padding: 0.5rem 1.1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #555;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #f0f0f0;
 }
 
 .tasks-page .error-message {
