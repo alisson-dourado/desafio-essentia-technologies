@@ -1,0 +1,11 @@
+<section>
+  <h1>Tarefas</h1>
+
+  <app-task-form
+    (taskCreated)="createTask($event)"
+  />
+
+  <app-task-list
+    [tasks]="tasks()"
+  />
+</section>

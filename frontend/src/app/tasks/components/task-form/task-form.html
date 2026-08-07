@@ -1,0 +1,32 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div>
+      <label for="title">Título</label>
+  
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        maxlength="255"
+      />
+  
+      @if (form.controls.title.touched && form.controls.title.invalid) {
+        <small>
+          Título é obrigatório e deve ter no máximo 255 caracteres.
+        </small>
+      }
+    </div>
+  
+    <div>
+      <label for="description">Descrição</label>
+  
+      <textarea
+        id="description"
+        formControlName="description"
+        rows="4"
+      ></textarea>
+    </div>
+  
+    <button type="submit" [disabled]="form.invalid">
+      Criar tarefa
+    </button>
+  </form>
