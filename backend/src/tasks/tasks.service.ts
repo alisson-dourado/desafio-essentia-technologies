@@ -16,4 +16,8 @@ export class TasksService {
 
     return this.tasksRepository.save(task);
   }
+
+  async findAll(): Promise<Task[]> {
+    return this.tasksRepository.find();
+  }
 }
