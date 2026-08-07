@@ -63,3 +63,23 @@
   background-color: #a9c2a9;
   cursor: not-allowed;
 }
+
+.task-form button[type='button'] {
+  margin-left: 0.6rem;
+  padding: 0.55rem 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #555;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.task-form button[type='button']:hover:not(:disabled) {
+  background-color: #f0f0f0;
+}
+
+.task-form button[type='button']:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
