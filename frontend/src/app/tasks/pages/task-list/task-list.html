@@ -1,0 +1,23 @@
+<section>
+  <h1>Tarefas</h1>
+
+  @if (tasks().length === 0) {
+    <p>Nenhuma tarefa encontrada.</p>
+  } @else {
+    <ul>
+      @for (task of tasks(); track task.id) {
+        <li>
+          <strong>{{ task.title }}</strong>
+
+          @if (task.description) {
+            <p>{{ task.description }}</p>
+          }
+
+          <span>
+            {{ task.completed ? 'Concluída' : 'Pendente' }}
+          </span>
+        </li>
+      }
+    </ul>
+  }
+</section>

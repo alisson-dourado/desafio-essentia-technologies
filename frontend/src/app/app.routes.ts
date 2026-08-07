@@ -1,3 +1,11 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+import { TaskList } from './tasks/pages/task-list/task-list';
+
+export const routes: Routes = [
+  {
+    path: '',
+    component: TaskList,
+  },
+];
+    
