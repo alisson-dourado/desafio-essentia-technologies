@@ -1,5 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { finalize } from 'rxjs';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../auth/services/auth.service';
 
 import { Task } from '../../models/task';
 import { TasksService } from '../../services/tasks.service';
@@ -16,6 +18,8 @@ import { UpdateTask } from '../../models/update-task';
 })
 export class TaskPage implements OnInit {
   private readonly tasksService = inject(TasksService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   readonly tasks = signal<Task[]>([]);
   readonly editingTask = signal<Task | null>(null);
@@ -41,6 +45,11 @@ export class TaskPage implements OnInit {
         this.loading.set(false);
       },
     });
+  }
+
+  logout(): void {
+    this.authService.logout();
+    void this.router.navigate(['/login']);
   }
 
   createTask(createTask: CreateTask): void {

@@ -1,6 +1,8 @@
 <section class="tasks-page">
   <h1>Tarefas</h1>
 
+  <button (click)="logout()">Sair</button>
+
   <app-task-form
     [taskToEdit]="editingTask()"
     [saving]="saving()"
