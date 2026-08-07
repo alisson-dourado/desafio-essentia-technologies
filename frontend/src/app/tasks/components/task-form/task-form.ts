@@ -24,6 +24,7 @@ export class TaskForm {
     id: number;
     changes: UpdateTask;
   }>();
+  readonly editCancelled = output<void>();
 
   readonly form = this.formBuilder.nonNullable.group({
     title: ['', [Validators.required, Validators.maxLength(255)]],
@@ -73,5 +74,9 @@ export class TaskForm {
     });
   
     this.form.reset();
+  }
+
+  cancelEdit(): void {
+    this.editCancelled.emit();
   }
 }

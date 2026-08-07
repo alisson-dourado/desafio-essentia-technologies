@@ -6,6 +6,7 @@
     [saving]="saving()"
     (taskCreated)="createTask($event)"
     (taskUpdated)="updateTask($event)"
+    (editCancelled)="cancelEditing()"
   />
 
   @if (actionError()) {

@@ -36,4 +36,14 @@
         {{ taskToEdit() ? 'Salvar alterações' : 'Criar tarefa' }}
       }
     </button>
+
+    @if (taskToEdit()) {
+      <button
+        type="button"
+        (click)="cancelEdit()"
+        [disabled]="saving()"
+      >
+        Cancelar
+      </button>
+    }
   </form>

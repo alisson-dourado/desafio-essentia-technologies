@@ -146,4 +146,8 @@ export class TaskPage implements OnInit {
         },
       });
   }
+
+  cancelEditing(): void {
+    this.editingTask.set(null);
+  }
 }
