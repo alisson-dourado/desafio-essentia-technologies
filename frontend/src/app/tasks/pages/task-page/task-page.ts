@@ -18,14 +18,23 @@ export class TaskPage implements OnInit {
 
   readonly tasks = signal<Task[]>([]);
   readonly editingTask = signal<Task | null>(null);
+  readonly loading = signal(false);
+  readonly errorMessage = signal<string | null>(null);
 
   ngOnInit(): void {
+    this.loading.set(true);
+    this.errorMessage.set(null);
+
     this.tasksService.findAll().subscribe({
       next: (tasks) => {
         this.tasks.set(tasks);
+        this.loading.set(false);
       },
       error: (error) => {
         console.error('Error loading tasks', error);
+
+        this.errorMessage.set('Não foi possível carregar as tarefas.');
+        this.loading.set(false);
       },
     });
   }

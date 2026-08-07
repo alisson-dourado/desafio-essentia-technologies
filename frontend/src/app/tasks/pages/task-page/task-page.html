@@ -7,10 +7,16 @@
     (taskUpdated)="updateTask($event)"
   />
 
-  <app-task-list
-    [tasks]="tasks()"
-    (completionChanged)="updateCompletion($event.id, $event.completed)"
-    (taskDeleted)="deleteTask($event)"
-    (taskEditRequested)="startEditing($event)"
-  />
+  @if (loading()) {
+    <p>Carregando tarefas...</p>
+  } @else if (errorMessage()) {
+    <p>{{ errorMessage() }}</p>
+  } @else {
+    <app-task-list
+      [tasks]="tasks()"
+      (completionChanged)="updateCompletion($event.id, $event.completed)"
+      (taskDeleted)="deleteTask($event)"
+      (taskEditRequested)="startEditing($event)"
+    />
+  }
 </section>
