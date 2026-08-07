@@ -1,0 +1,90 @@
+.task-list-empty {
+  padding: 1.5rem;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
+  text-align: center;
+  color: #777;
+}
+
+.task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.task-list-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+}
+
+.task-list-item input[type='checkbox'] {
+  width: 1.1rem;
+  height: 1.1rem;
+  cursor: pointer;
+}
+
+.task-list-item strong {
+  flex: 1 1 auto;
+  font-size: 1rem;
+  color: #222;
+}
+
+.task-list-item p {
+  flex: 1 1 100%;
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.task-list-item .status {
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  background-color: #eee;
+  color: #666;
+  font-size: 0.75rem;
+}
+
+.task-list-item button {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.task-list-item button:hover:not(:disabled) {
+  background-color: #f0f0f0;
+}
+
+.task-list-item button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.task-list-item .btn-delete {
+  margin-left: auto;
+  color: #c0392b;
+  border-color: #e0a5a0;
+}
+
+.task-list-item .btn-delete:hover:not(:disabled) {
+  background-color: #fbeceb;
+}
+
+.task-list-item input[type='checkbox']:checked ~ strong {
+  color: #999;
+  text-decoration: line-through;
+}
+
+.task-list-item input[type='checkbox']:checked ~ .status {
+  background-color: #dff0d8;
+  color: #3c763d;
+}

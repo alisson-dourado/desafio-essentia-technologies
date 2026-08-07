@@ -1,9 +1,9 @@
 @if (tasks().length === 0) {
-    <p>Nenhuma tarefa encontrada.</p>
+    <p class="task-list-empty">Nenhuma tarefa encontrada.</p>
 } @else {
-    <ul>
+    <ul class="task-list">
         @for (task of tasks(); track task.id) {
-            <li>
+            <li class="task-list-item">
                 <input
                     type="checkbox"
                     [checked]="task.completed"
@@ -17,12 +17,13 @@
                     <p>{{ task.description }}</p>
                 }
 
-                <span>
+                <span class="status">
                     {{ task.completed ? 'Concluída' : 'Pendente' }}
                 </span>
 
                 <button
                     type="button"
+                    class="btn-delete"
                     [disabled]="processingTaskId() === task.id"
                     (click)="deleteTask(task.id)"
                 >
@@ -31,6 +32,7 @@
 
                 <button
                     type="button"
+                    class="btn-edit"
                     [disabled]="processingTaskId() === task.id"
                     (click)="editTask(task)"
                 >

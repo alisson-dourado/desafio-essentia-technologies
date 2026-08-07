@@ -1,4 +1,4 @@
-<section>
+<section class="tasks-page">
   <h1>Tarefas</h1>
 
   <app-task-form
@@ -9,13 +9,13 @@
   />
 
   @if (actionError()) {
-    <p>{{ actionError() }}</p>
+    <p class="error-message">{{ actionError() }}</p>
   }
 
   @if (loading()) {
     <p>Carregando tarefas...</p>
   } @else if (errorMessage()) {
-    <p>{{ errorMessage() }}</p>
+    <p class="error-message">{{ errorMessage() }}</p>
   } @else {
     <app-task-list
       [tasks]="tasks()"
