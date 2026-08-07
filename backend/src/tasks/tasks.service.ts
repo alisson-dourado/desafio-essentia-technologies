@@ -44,4 +44,10 @@ export class TasksService {
 
     return this.tasksRepository.save(task);
   }
+
+  async remove(id: number): Promise<void> {
+    const task = await this.findOne(id);
+
+    await this.tasksRepository.remove(task);
+  }
 }
