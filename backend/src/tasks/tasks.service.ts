@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -9,18 +9,34 @@ import { TaskHistoryAction } from 'src/task-history/schemas/task-history.schema'
 
 @Injectable()
 export class TasksService {
+  private readonly logger = new Logger(TasksService.name);
   constructor(
     @InjectRepository(Task)
     private readonly tasksRepository: Repository<Task>,
     private readonly taskHistoryService: TaskHistoryService,
   ) {}
 
+  private recordHistory(
+    taskId: number,
+    action: TaskHistoryAction,
+    data?: Record<string, unknown>,
+  ): void {
+    void this.taskHistoryService
+      .create(taskId, action, data)
+      .catch((error: unknown) => {
+        this.logger.error(
+          `Failed to record history for task ${taskId}`,
+          error instanceof Error ? error.stack : undefined,
+        );
+      });
+  }
+
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
     const task = this.tasksRepository.create(createTaskDto);
     const savedTask = await this.tasksRepository.save(task);
 
     // O documento do MongoDB armazena um histórico adicional da tarefa utilizando o ID da tarefa gerado.
-    await this.taskHistoryService.create(savedTask.id, 'created', {
+    this.recordHistory(savedTask.id, 'created', {
       title: savedTask.title,
       description: savedTask.description,
     });
@@ -67,7 +83,7 @@ export class TasksService {
       Object.entries(updateTaskDto).filter(([, value]) => value !== undefined),
     );
 
-    await this.taskHistoryService.create(updatedTask.id, action, {
+    this.recordHistory(updatedTask.id, action, {
       changes,
     });
 
@@ -77,12 +93,12 @@ export class TasksService {
   async remove(id: number): Promise<void> {
     const task = await this.findOne(id);
 
-    await this.taskHistoryService.create(task.id, 'deleted', {
+    await this.tasksRepository.remove(task);
+
+    this.recordHistory(task.id, 'deleted', {
       title: task.title,
       description: task.description,
       completed: task.completed,
     });
-
-    await this.tasksRepository.remove(task);
   }
 }
