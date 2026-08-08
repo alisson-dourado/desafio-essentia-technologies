@@ -24,4 +24,11 @@ export class TaskHistoryService {
 
     return history.save();
   }
+
+  async findByTaskId(taskId: number): Promise<TaskHistory[]> {
+    return this.taskHistoryModel
+      .find({ taskId })
+      .sort({ createdAt: -1 })
+      .exec();
+  }
 }

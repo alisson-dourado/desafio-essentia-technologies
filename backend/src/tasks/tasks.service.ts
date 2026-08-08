@@ -5,7 +5,10 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
 import { TaskHistoryService } from '../task-history/task-history.service';
-import { TaskHistoryAction } from 'src/task-history/schemas/task-history.schema';
+import {
+  TaskHistoryAction,
+  TaskHistory,
+} from 'src/task-history/schemas/task-history.schema';
 
 @Injectable()
 export class TasksService {
@@ -100,5 +103,11 @@ export class TasksService {
       description: task.description,
       completed: task.completed,
     });
+  }
+
+  async findHistory(id: number): Promise<TaskHistory[]> {
+    await this.findOne(id);
+
+    return this.taskHistoryService.findByTaskId(id);
   }
 }
