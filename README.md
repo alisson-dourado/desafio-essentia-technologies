@@ -1,6 +1,6 @@
 # TechX Task Manager
 
-Aplicação fullstack de gerenciamento de tarefas desenvolvida como parte do desafio técnico da Essentia Group.
+Aplicação fullstack de gerenciamento de tarefas.
 
 A aplicação permite que usuários autenticados criem, listem, editem, concluam, reabram e excluam tarefas. Também mantém um histórico adicional das tarefas utilizando MongoDB.
 
