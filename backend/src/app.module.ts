@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { TasksModule } from './tasks/tasks.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { TaskHistoryModule } from './task-history/task-history.module';
 
 @Module({
   imports: [
@@ -27,11 +29,20 @@ import { AuthModule } from './auth/auth.module';
       }),
     }),
 
+    MongooseModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.getOrThrow<string>('MONGO_URI'),
+      }),
+    }),
+
     TasksModule,
 
     UsersModule,
 
     AuthModule,
+
+    TaskHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
