@@ -38,6 +38,50 @@
                 >
                     Editar
                 </button>
+
+                <button
+                    type="button"
+                    class="btn-history"
+                    (click)="requestHistory(task.id)"
+                >
+                    Histórico
+                </button>
+
+                @if (historyTaskId() === task.id) {
+                    <div class="task-history">
+                      @if (loadingHistory()) {
+                        <p class="history-status">Carregando histórico...</p>
+                      } @else if (historyError()) {
+                        <p class="history-status history-status-error">{{ historyError() }}</p>
+                      } @else if (taskHistory().length === 0) {
+                        <p class="history-status">Nenhum histórico encontrado.</p>
+                      } @else {
+                        <ul class="history-list">
+                          @for (history of taskHistory(); track history._id) {
+                            <li
+                              class="history-item"
+                              [class.history-item-created]="history.action === 'created'"
+                              [class.history-item-updated]="history.action === 'updated'"
+                              [class.history-item-deleted]="history.action === 'deleted'"
+                            >
+                              <div class="history-item-header">
+                                <strong class="history-action">{{ historyActionLabel(history.action) }}</strong>
+                                <span class="history-date">{{ history.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+                              </div>
+
+                              @if (history.action === 'updated') {
+                                <div class="history-changes">
+                                  @for (change of historyChanges(history); track change) {
+                                    <small>{{ change }}</small>
+                                  }
+                                </div>
+                              }
+                            </li>
+                          }
+                        </ul>
+                      }
+                    </div>
+                }
             </li>
         }
     </ul>

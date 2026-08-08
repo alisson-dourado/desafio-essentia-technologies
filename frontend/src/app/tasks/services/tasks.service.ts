@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 import { Task } from '../models/task';
 import { CreateTask } from '../models/create-task';
 import { UpdateTask } from '../models/update-task';
+import { TaskHistory } from '../models/task-history.model';
 
 @Injectable({
   providedIn: 'root',
@@ -31,5 +32,11 @@ export class TasksService {
 
   remove(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  getHistory(taskId: number) {
+    return this.http.get<TaskHistory[]>(
+      `${this.apiUrl}/${taskId}/history`,
+    );
   }
 }

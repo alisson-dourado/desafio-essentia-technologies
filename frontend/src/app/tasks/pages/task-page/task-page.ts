@@ -9,6 +9,7 @@ import { TaskForm } from '../../components/task-form/task-form';
 import { TaskList } from '../../components/task-list/task-list';
 import { CreateTask } from '../../models/create-task';
 import { UpdateTask } from '../../models/update-task';
+import { TaskHistory } from '../../models/task-history.model';
 
 @Component({
   selector: 'app-task-page',
@@ -28,6 +29,11 @@ export class TaskPage implements OnInit {
   readonly saving = signal(false);
   readonly processingTaskId = signal<number | null>(null);
   readonly actionError = signal<string | null>(null);
+
+  readonly historyTaskId = signal<number | null>(null);
+  readonly taskHistory = signal<TaskHistory[]>([]);
+  readonly loadingHistory = signal(false);
+  readonly historyError = signal('');
 
   ngOnInit(): void {
     this.loading.set(true);
@@ -158,5 +164,33 @@ export class TaskPage implements OnInit {
 
   cancelEditing(): void {
     this.editingTask.set(null);
+  }
+
+  toggleHistory(taskId: number): void {
+    if (this.historyTaskId() === taskId) {
+      this.historyTaskId.set(null);
+      this.taskHistory.set([]);
+      this.historyError.set('');
+      return;
+    }
+  
+    this.historyTaskId.set(taskId);
+    this.taskHistory.set([]);
+    this.historyError.set('');
+    this.loadingHistory.set(true);
+  
+    this.tasksService
+      .getHistory(taskId)
+      .pipe(
+        finalize(() => this.loadingHistory.set(false)),
+      )
+      .subscribe({
+        next: (history) => {
+          this.taskHistory.set(history);
+        },
+        error: () => {
+          this.historyError.set('Não foi possível carregar o histórico.');
+        },
+      });
   }
 }

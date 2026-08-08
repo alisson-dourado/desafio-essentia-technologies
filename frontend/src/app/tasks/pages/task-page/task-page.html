@@ -31,9 +31,14 @@
     <app-task-list
       [tasks]="tasks()"
       [processingTaskId]="processingTaskId()"
+      [historyTaskId]="historyTaskId()"
+      [taskHistory]="taskHistory()"
+      [loadingHistory]="loadingHistory()"
+      [historyError]="historyError()"
       (completionChanged)="updateCompletion($event.id, $event.completed)"
       (taskDeleted)="deleteTask($event)"
       (taskEditRequested)="startEditing($event)"
+      (taskHistoryRequested)="toggleHistory($event)"
     />
   }
 </section>
