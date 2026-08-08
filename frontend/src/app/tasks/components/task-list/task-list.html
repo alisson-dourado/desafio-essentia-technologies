@@ -24,7 +24,7 @@
                 <button
                     type="button"
                     class="btn-delete"
-                    [disabled]="processingTaskId() === task.id"
+                    [disabled]="processingTaskId() === task.id || task.completed"
                     (click)="deleteTask(task.id)"
                 >
                     Excluir
@@ -33,7 +33,7 @@
                 <button
                     type="button"
                     class="btn-edit"
-                    [disabled]="processingTaskId() === task.id"
+                    [disabled]="processingTaskId() === task.id || task.completed"
                     (click)="editTask(task)"
                 >
                     Editar
